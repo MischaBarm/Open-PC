@@ -1,0 +1,133 @@
+product-id: 931
+comment: "Open-PC - Info-Modus und Schatzsuche-Modus"
+gme-lang: GERMAN
+language: de
+media-path: Audio/%s
+
+# Beim Anschalten des Projekts (Anschaltfeld antippen)
+welcome: willkommen
+
+# $modus: 0 = nicht gewählt, 1 = Info-Modus, 2 = Schatzsuche
+# $ziel:  Welche Komponente gerade gesucht wird (1-15)
+# $gefunden: Wie viele Komponenten in der Schatzsuche schon gefunden wurden
+init: $modus:=0 $ziel:=0 $gefunden:=0
+
+scripts:
+
+  # ---------------------------------------------
+  # MODUS-WAHL (zwei separate Felder zum Antippen)
+  # ---------------------------------------------
+  modus_info:
+    - $modus:=1 P(modus_info_start)
+
+  modus_schatzsuche:
+    - $modus:=2 $ziel:=1 $gefunden:=0 P(schatzsuche_start) J(schatzsuche_naechste)
+
+  # ---------------------------------------------
+  # SCHATZSUCHE - Steuerung
+  # Dieses Skript sagt dem Spieler welche Komponente er suchen soll
+  # ---------------------------------------------
+  schatzsuche_naechste:
+    - $ziel==1?  P(schatzsuche_silent) P(suche_motherboard)
+    - $ziel==2?  P(schatzsuche_silent) P(suche_cpu)
+    - $ziel==3?  P(schatzsuche_silent) P(suche_ram)
+    - $ziel==4?  P(schatzsuche_silent) P(suche_psu)
+    - $ziel==5?  P(schatzsuche_silent) P(suche_ssd)
+    - $ziel==6?  P(schatzsuche_silent) P(suche_hdd)
+    - $ziel==7?  P(schatzsuche_silent) P(suche_gpu)
+    - $ziel==8?  P(schatzsuche_silent) P(suche_kuehler)
+    - $ziel==9?  P(schatzsuche_silent) P(suche_luefter)
+    - $ziel==10? P(schatzsuche_silent) P(suche_case)
+    - $ziel==11? P(schatzsuche_silent) P(suche_usba)
+    - $ziel==12? P(schatzsuche_silent) P(suche_usbc)
+    - $ziel==13? P(schatzsuche_silent) P(suche_hdmi)
+    - $ziel==14? P(schatzsuche_silent) P(suche_displayport)
+    - $ziel==15? P(schatzsuche_silent) P(suche_ethernet)
+    - $ziel==16? P(schatzsuche_silent) P(schatzsuche_ende)
+
+  # ---------------------------------------------
+  # PC-KOMPONENTEN
+  # Jede Komponente hat Info-Modus und Schatzsuche-Reaktion
+  # ---------------------------------------------
+
+  motherboard:
+    - $modus==1? P(info_motherboard)
+    - $modus==2? $ziel==1? $ziel+=1 $gefunden+=1 P(richtig_motherboard) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=1? P(falsch_prefix) P(falsch_motherboard)
+
+  cpu:
+    - $modus==1? P(info_cpu)
+    - $modus==2? $ziel==2? $ziel+=1 $gefunden+=1 P(richtig_cpu) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=2? P(falsch_prefix) P(falsch_cpu)
+
+  ram:
+    - $modus==1? P(info_ram)
+    - $modus==2? $ziel==3? $ziel+=1 $gefunden+=1 P(richtig_ram) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=3? P(falsch_prefix) P(falsch_ram)
+
+  psu:
+    - $modus==1? P(info_psu)
+    - $modus==2? $ziel==4? $ziel+=1 $gefunden+=1 P(richtig_psu) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=4? P(falsch_prefix) P(falsch_psu)
+
+  ssd:
+    - $modus==1? P(info_ssd)
+    - $modus==2? $ziel==5? $ziel+=1 $gefunden+=1 P(richtig_ssd) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=5? P(falsch_prefix) P(falsch_ssd)
+
+  hdd:
+    - $modus==1? P(info_hdd)
+    - $modus==2? $ziel==6? $ziel+=1 $gefunden+=1 P(richtig_hdd) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=6? P(falsch_prefix) P(falsch_hdd)
+
+  gpu:
+    - $modus==1? P(info_gpu)
+    - $modus==2? $ziel==7? $ziel+=1 $gefunden+=1 P(richtig_gpu) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=7? P(falsch_prefix) P(falsch_gpu)
+
+  kuehler:
+    - $modus==1? P(info_kuehler)
+    - $modus==2? $ziel==8? $ziel+=1 $gefunden+=1 P(richtig_kuehler) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=8? P(falsch_prefix) P(falsch_kuehler)
+
+  luefter:
+    - $modus==1? P(info_luefter)
+    - $modus==2? $ziel==9? $ziel+=1 $gefunden+=1 P(richtig_luefter) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=9? P(falsch_prefix) P(falsch_luefter)
+
+  case:
+    - $modus==1? P(info_case)
+    - $modus==2? $ziel==10? $ziel+=1 $gefunden+=1 P(richtig_case) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=10? P(falsch_prefix) P(falsch_case)
+
+  usba:
+    - $modus==1? P(info_usba)
+    - $modus==2? $ziel==11? $ziel+=1 $gefunden+=1 P(richtig_usba) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=11? P(falsch_prefix) P(falsch_usba)
+
+  usbc:
+    - $modus==1? P(info_usbc)
+    - $modus==2? $ziel==12? $ziel+=1 $gefunden+=1 P(richtig_usbc) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=12? P(falsch_prefix) P(falsch_usbc)
+
+  hdmi:
+    - $modus==1? P(info_hdmi)
+    - $modus==2? $ziel==13? $ziel+=1 $gefunden+=1 P(richtig_hdmi) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=13? P(falsch_prefix) P(falsch_hdmi)
+
+  displayport:
+    - $modus==1? P(info_displayport)
+    - $modus==2? $ziel==14? $ziel+=1 $gefunden+=1 P(richtig_displayport) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=14? P(falsch_prefix) P(falsch_displayport)
+
+  ethernet:
+    - $modus==1? P(info_ethernet)
+    - $modus==2? $ziel==15? $ziel+=1 $gefunden+=1 P(richtig_ethernet) J(schatzsuche_naechste)
+    - $modus==2? $ziel!=15? P(falsch_prefix) P(falsch_ethernet)
+
+# ---------------------------------------------
+# TEXT-TO-SPEECH PLATZHALTER
+# Ersetze später die speak-Einträge durch echte .ogg-Dateien im Ordner Audio/
+# ---------------------------------------------
+speak:
+  schatzsuche_silent: " "
